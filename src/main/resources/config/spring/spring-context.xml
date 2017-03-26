@@ -53,7 +53,7 @@
         <property name="jdbcUrl" value="jdbc:mysql://localhost/floor_report?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"/>
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
         <property name="user" value="root"/>
-        <property name="password" value="18912538930"/>
+        <property name="password" value=""/>
         <!--连接池中保留的最大连接数。Default: 15 -->
         <property name="maxPoolSize" value="100"/>
         <!--连接池中保留的最小连接数。-->

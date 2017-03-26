@@ -8,7 +8,7 @@
     <!--"http://java.sun.com/dtd/web-app_2_3.dtd" >-->
 
     <!--<web-app>-->
-    <display-name>floor-report</display-name>
+    <display-name>floor-report </display-name>
     <!-- 配置 Spring -->
     <context-param>
         <param-name>contextConfigLocation</param-name>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinrong.floor.repository.FloorAdminRepository">
+    <resultMap id="BaseResultMap" type="com.xinrong.floor.entity.FloorAdminEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="employeeId" jdbcType="BIGINT" property="employeeId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="phoneNumber" jdbcType="VARCHAR" property="phoneNumber"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="createTime" jdbcType="BIGINT" property="createTime"/>
+        <result column="updateTime" jdbcType="BIGINT" property="updateTime"/>
+    </resultMap>
+
+    <sql id="Table">floor_admin</sql>
+    <sql id="Base_Column_List">
+     id ,employeeId,name,password,phoneNumber,email,createTime,updateTime
+	</sql>
+
+    <insert id="insert" parameterType="com.xinrong.floor.entity.FloorAdminEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO
+        <include refid="Table"/>
+        (<include refid="Base_Column_List"/>)
+        VALUES
+        (NULL,#{employeeId,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{phoneNumber,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR}
+        ,unix_timestamp(),unix_timestamp())
+    </insert>
+
+    <delete id="deleteByEmployeeId" parameterType="java.lang.Long">
+        DELETE
+        FROM
+        <include refid="Table"/>
+        WHERE employeeId = #{employeeId,jdbcType=BIGINT}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.xinrong.floor.entity.FloorAdminEntity">
+        UPDATE
+        <include refid="Table"/>
+        <set>
+            <if test="name != null and name !='' ">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null and password !='' ">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNumber != null and phoneNumber !='' ">
+                phoneNumber = #{phoneNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null and email !='' ">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            updateTime = unix_timestamp()
+        </set>
+        WHERE employeeId = #{employeeId,jdbcType=BIGINT}
+    </update>
+
+    <select id="queryAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="Table"/>
+    </select>
+
+    <select id="queryByPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="Table"/> limit #{offset,jdbcType=BIGINT},#{limits,jdbcType=BIGINT}
+    </select>
+
+    <select id="queryByEmployeeId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="Table"/>
+        WHERE employeeId = #{employeeId,jdbcType=BIGINT}
+    </select>
+
+    <select id="queryByEmployeeIdAndPassword" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="Table"/>
+        WHERE employeeId = #{employeeId,jdbcType=BIGINT} AND password = #{password,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryListByName" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="Table"/>
+        WHERE name = #{name,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

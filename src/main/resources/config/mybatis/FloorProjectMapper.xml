@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinrong.floor.repository.FloorProjectRepository">
+    <resultMap id="BaseResultMap" type="com.xinrong.floor.entity.FloorProjectEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="employeeId" jdbcType="BIGINT" property="employeeId"/>
+        <result column="clientId" jdbcType="BIGINT" property="clientId"/>
+        <result column="designerId" jdbcType="BIGINT" property="designerId"/>
+        <result column="floorHeating" jdbcType="TINYINT" property="floorHeating"/>
+        <result column="progress" jdbcType="VARCHAR" property="progress"/>
+        <result column="floorType" jdbcType="VARCHAR" property="floorType"/>
+        <result column="communicationProgress" jdbcType="VARCHAR" property="communicationProgress"/>
+        <result column="visitTime" jdbcType="BIGINT" property="visitTime"/>
+        <result column="createTime" jdbcType="BIGINT" property="createTime"/>
+        <result column="updateTime" jdbcType="BIGINT" property="updateTime"/>
+    </resultMap>
+
+    <sql id="Table">floor_project</sql>
+    <sql id="Base_Column_List">
+     id ,employeeId,clientId,designerId,floorHeating,progress,floorType,communicationProgress,visitTime,createTime,updateTime
+	</sql>
+
+    <insert id="insert" parameterType="com.xinrong.floor.entity.FloorProjectEntity" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO
+        <include refid="Table"/>
+        (<include refid="Base_Column_List"/>)
+        VALUES
+        (NULL,#{employeeId,jdbcType=BIGINT},#{clientId,jdbcType=BIGINT},#{designerId,jdbcType=BIGINT},#{floorHeating,jdbcType=TINYINT},#{progress,jdbcType=VARCHAR},#{floorType,jdbcType=VARCHAR},
+        #{communicationProgress,jdbcType=VARCHAR},#{visitTime,jdbcType=BIGINT},unix_timestamp(),unix_timestamp())
+    </insert>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE
+        FROM
+        <include refid="Table"/>
+        WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.xinrong.floor.entity.FloorProjectEntity">
+        UPDATE
+        <include refid="Table"/>
+        <set>
+            <if test="employeeId != null">
+                employeeId = #{employeeId,jdbcType=BIGINT},
+            </if>
+            <if test="clientId != null">
+                clientId = #{clientId,jdbcType=BIGINT},
+            </if>
+            <if test="designerId != null">
+                designerId = #{designerId,jdbcType=BIGINT},
+            </if>
+            <if test="floorHeating != null">
+                floorHeating = #{floorHeating,jdbcType=TINYINT},
+            </if>
+            <if test="progress != null and progress !='' ">
+                progress = #{progress,jdbcType=VARCHAR},
+            </if>
+            <if test="floorType != null and floorType !='' ">
+                floorType = #{floorType,jdbcType=VARCHAR},
+            </if>
+            <if test="communicationProgress != null and communicationProgress !='' ">
+                communicationProgress = #{communicationProgress,jdbcType=VARCHAR},
+            </if>
+            <if test="visitTime != null">
+                visitTime = #{visitTime,jdbcType=BIGINT},
+            </if>
+            updateTime = unix_timestamp()
+        </set>
+        WHERE id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="queryTotalCount" resultType="java.lang.Long">
+        SELECT
+        count(0)
+        FROM
+        <include refid="Table"/>
+    </select>
+
+    <select id="queryCountByEmployeeId" resultType="java.lang.Long">
+        SELECT
+        count(0)
+        FROM
+        <include refid="Table"/>
+        WHERE employeeId = #{employeeId,jdbcType=BIGINT}
+    </select>
+
+    <select id="queryAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="Table"/>
+    </select>
+
+    <select id="queryByPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="Table"/> limit #{offset,jdbcType=BIGINT},#{limits,jdbcType=BIGINT}
+    </select>
+
+    <select id="queryById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="Table"/>
+        WHERE id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="queryListByEmployeeId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="Table"/>
+        WHERE employeeId = #{employeeId,jdbcType=BIGINT} limit  #{offset,jdbcType=BIGINT},#{limits,jdbcType=BIGINT}
+    </select>
+
+    <select id="queryListByDesignerId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="Table"/>
+        WHERE designerId = #{designerId,jdbcType=BIGINT} limit #{offset,jdbcType=BIGINT},#{limits,jdbcType=BIGINT}
+    </select>
+
+    <select id="queryListBeforeTime" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="Table"/>
+        WHERE createTime >= #{beforeTime,jdbcType=BIGINT} limit #{offset,jdbcType=BIGINT},#{limits,jdbcType=BIGINT}
+    </select>
+
+</mapper>
